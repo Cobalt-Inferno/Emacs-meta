@@ -62,8 +62,48 @@ Just a simple icon plugin
 #+END_SRC
 ** Haskell
 #+BEGIN_SRC emacs-lisp
-(use-package haskell-mode
+(defun efs/lsp-mode-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . efs/lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :config
+  (lsp-enable-which-key-integration t))
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
+
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-haskell
   :ensure t)
+(add-hook 'haskell-mode-hook #'lsp)
+(add-hook 'haskell-literate-mode-hook #'lsp)
+(use-package company
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+       ("<tab>" . company-complete-selection))
+       (:map lsp-mode-map
+       ("<tab>" . company-indent-or-complete-common))
+  :custom
+(company-minimum-prefix-length 1)
+(company-idle-delay 0.0))
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+(use-package haskell-mode
+  :mode "\\.hs\\'"
+  :hook (haskell-mode . lsp-deferred)
+  :config
+  (setq haskell-indent-level 2))
+
 (use-package hindent
   :ensure t)
 (add-hook 'haskell-mode-hook #'hindent-mode)
@@ -214,7 +254,6 @@ These are just some doom emacs keybinds I like having
   "SPC"   '(counsel-M-x :which-key "M-x")
   "."     '(find-file :which-key "Find file") 
   "c c"   '(compile :which-key "Compile")
-  "f f"   '(dirvish :which-key "Dirvish")
   "c C"   '(recompile :which-key "Recompile")
   "h r r" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload emacs config")
   "t t"   '(toggle-truncate-lines :which-key "Toggle truncate lines"))

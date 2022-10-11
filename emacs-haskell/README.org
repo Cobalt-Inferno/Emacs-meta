@@ -338,6 +338,13 @@ And here are the hooks we define.
             (define-key haskell-mode-map "(" 'electric-pair)
             (define-key haskell-mode-map "[" 'electric-pair)
             (define-key haskell-mode-map "{" 'electric-pair)))
+ (add-hook 'LaTeX-mode-hook
+          (lambda ()
+            (define-key LaTeX-mode-map "\"" 'electric-pair)
+            (define-key LaTeX-mode-map "\'" 'electric-pair)
+            (define-key LaTeX-mode-map "(" 'electric-pair)
+            (define-key LaTeX-mode-map "[" 'electric-pair)
+            (define-key LaTeX-mode-map "{" 'electric-pair)))
 #+END_SRC
 *** Garbage Collection
 #+BEGIN_SRC emacs-lisp
@@ -351,3 +358,16 @@ And here is the hook for it.
 (add-hook 'focus-out-hook #'my-gc-function)
 #+END_SRC
 latex
+#+BEGIN_SRC emacs-lisp
+(add-hook 'LaTeX-mode-hook #'latex-preview-pane-mode)
+  (dolist (hook '(text-mode-hook))
+    (add-hook hook (lambda () (flyspell-mode 1))))
+  (dolist (hook '(change-log-mode-hook log-edit-mode-hook))
+    (add-hook hook (lambda () (flyspell-mode -1))))
+(add-hook 'LaTeX-mode-hook
+      (lambda ()
+        (setq indent-tabs-mode t
+              indent-line-function 'tab-to-tab-stop
+              tab-width 2
+              electric-indent-mode nil)))
+#+END_SRC

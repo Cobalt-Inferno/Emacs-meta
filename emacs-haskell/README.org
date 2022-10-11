@@ -63,7 +63,6 @@ Just a simple icon plugin
 ** Haskell
 #+BEGIN_SRC emacs-lisp
 (defun efs/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
   (lsp-headerline-breadcrumb-mode))
 
 (use-package lsp-mode
@@ -81,7 +80,7 @@ Just a simple icon plugin
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
 (use-package lsp-haskell
-  :ensure t)
+  :ensure t) 
 (add-hook 'haskell-mode-hook #'lsp)
 (add-hook 'haskell-literate-mode-hook #'lsp)
 (use-package company
@@ -247,25 +246,27 @@ I personally like doing this, though it will break some stuff, so you probably s
 *** SPC commands
 These are just some doom emacs keybinds I like having
 #+BEGIN_SRC emacs-lisp
-(nvmap :prefix "SPC"
-  "t n"   '(neotree-toggle :which-key "Toggle neotree file viewer")
-  "d n"   '(neotree-dir :which-key "Open directory in neotree"))
-(nvmap :keymaps 'override :prefix "SPC"
-  "SPC"   '(counsel-M-x :which-key "M-x")
-  "."     '(find-file :which-key "Find file") 
-  "c c"   '(compile :which-key "Compile")
-  "c C"   '(recompile :which-key "Recompile")
-  "h r r" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload emacs config")
-  "t t"   '(toggle-truncate-lines :which-key "Toggle truncate lines"))
-(nvmap :prefix "SPC"
-  "b b"   '(ibuffer :which-key "Ibuffer")
-  "b c"   '(clone-indirect-buffer-other-window :which-key "Clone indirect buffer other window")
-  "b k"   '(kill-current-buffer :which-key "Kill current buffer")
-  "b n"   '(next-buffer :which-key "Next buffer")
-  "b p"   '(previous-buffer :which-key "Previous buffer")
-  "b B"   '(ibuffer-list-buffers :which-key "Ibuffer list buffers")
-  "b K"   '(kill-buffer :which-key "Kill buffer")
-  "r f"   '(dashboard-refresh-buffer :which-key "Refresh buffer"))
+  (nvmap :prefix "SPC"
+    "t n"   '(neotree-toggle :which-key "Toggle neotree file viewer")
+    "d n"   '(neotree-dir :which-key "Open directory in neotree"))
+  (nvmap :keymaps 'override :prefix "SPC"
+    "SPC"   '(counsel-M-x :which-key "M-x")
+    "."     '(find-file ~/ :which-key "Find file")
+    "j j"   '(latex-preview-pane-mode :which-key "Reload pdf")
+    "c c"   '(compile :which-key "Compile")
+    "f f"   '(flymake-show-buffer-diagnostics :which-key "Diagnostics")
+    "c C"   '(recompile :which-key "Recompile")
+    "h r r" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload emacs config")
+    "t t"   '(toggle-truncate-lines :which-key "Toggle truncate lines"))
+  (nvmap :prefix "SPC"
+    "b b"   '(ibuffer :which-key "Ibuffer")
+    "b c"   '(clone-indirect-buffer-other-window :which-key "Clone indirect buffer other window")
+    "b k"   '(kill-current-buffer :which-key "Kill current buffer")
+    "b n"   '(next-buffer :which-key "Next buffer")
+    "b p"   '(previous-buffer :which-key "Previous buffer")
+    "b B"   '(ibuffer-list-buffers :which-key "Ibuffer list buffers")
+    "b K"   '(kill-buffer :which-key "Kill buffer")
+    "r f"   '(dashboard-refresh-buffer :which-key "Refresh buffer"))
 #+END_SRC
 *** Evil mode undo/redo
 #+BEGIN_SRC emacs-lisp
@@ -349,3 +350,4 @@ And here is the hook for it.
 #+BEGIN_SRC emacs-lisp
 (add-hook 'focus-out-hook #'my-gc-function)
 #+END_SRC
+latex
